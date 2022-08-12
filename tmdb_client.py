@@ -1,5 +1,7 @@
 import requests
-API_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzZmQ4NGVhNDkwODE3NThhMmZhOGUzOWFhODYyOWRiMSIsInN1YiI6IjYyY2MzODM4ZmQ0YTk2MGY0ZmNhY2U2ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.pP9AQaU8CGOiGp6bXts480kNaJ-5XFjGoUJcg-zS0Vo"
+import os
+
+API_TOKEN = os.environ.get("TMDB_API_TOKEN", "")
 API_TOKEN2 = "3fd84ea49081758a2fa8e39aa8629db1"
 
 
@@ -86,3 +88,12 @@ def get_airing_today():
     response.raise_for_status()
     response = response.json()
     return response['results']
+
+def call_tmdb_api(endpoint):
+   full_url = f"https://api.themoviedb.org/3/{endpoint}"
+   headers = {
+       "Authorization": f"Bearer {API_TOKEN}"
+   }
+   response = requests.get(full_url, headers=headers)
+   response.raise_for_status()
+   return response.json()
